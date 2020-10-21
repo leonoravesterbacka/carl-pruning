@@ -12,6 +12,9 @@ from .utils.tools import load_and_check
 from .trainers import RatioTrainer
 from .base import Estimator
 
+import torch.nn.utils.prune as prune
+
+
 try:
     FileNotFoundError
 except NameError:
@@ -55,6 +58,7 @@ class RatioEstimator(Estimator):
         validation_split=0.25,
         early_stopping=True,
         scale_inputs=True,
+        prune_network = False,
         limit_samplesize=None,
         memmap=False,
         verbose="some",
@@ -182,6 +186,19 @@ class RatioEstimator(Estimator):
         if self.model is None:
             logger.info("Creating model")
             self._create_model()
+        if prune_network:
+            module = self.model.ll1
+            print("before pruning")
+            print(list(module.named_parameters()))
+            print(list(module.named_buffers()))
+
+            prune.random_unstructured(module, name="weight", amount=0.3)
+            print("before pruning")
+            print(list(module.named_parameters()))
+            print(list(module.named_buffers()))
+            print(self.model.state_dict().keys())
+
+
         # Losses
         w = len(x0)/len(x1)
         logger.info("Passing weight %s to the loss function to account for imbalanced dataset: ", w)
@@ -192,6 +209,7 @@ class RatioEstimator(Estimator):
         # Train model
         logger.info("Training model")
         trainer = RatioTrainer(self.model, n_workers=n_workers)
+
         result = trainer.train(
             data=data,
             data_val=data_val,

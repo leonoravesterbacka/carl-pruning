@@ -65,6 +65,7 @@ estimator.train(
     x0=x0, 
     x1=x1,
     scale_inputs = True,
+    prune_network = True,
 #    early_stopping = True,
 #    early_stopping_patience = 10
 )
