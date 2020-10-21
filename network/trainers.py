@@ -10,6 +10,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler
 from torch.nn.utils import clip_grad_norm_
+import torch.nn.utils.prune
 logger = logging.getLogger(__name__)
 
 class NanException(Exception):
