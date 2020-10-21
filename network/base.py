@@ -6,6 +6,8 @@ import json
 import numpy as np
 import torch
 import tarfile
+import torch.nn.utils.prune as prune
+
 
 from .utils.tools import create_missing_folders, load_and_check
 try:
@@ -25,7 +27,7 @@ class Estimator(object):
     Please see the tutorial for a detailed walk-through.
     """
 
-    def __init__(self, features=None, n_hidden=(100,), activation="tanh", dropout_prob=0.0):
+    def __init__(self, features=None, n_hidden=(100,), activation="relu", dropout_prob=0.0):
         self.features = features
         self.n_hidden = n_hidden
         self.activation = activation
@@ -51,7 +53,7 @@ class Estimator(object):
     def evaluate(self, *args, **kwargs):
         raise NotImplementedError
 
-    def save(self, filename, x, save_model=False, export_model=False):
+    def save(self, filename, x, save_model=True, export_model=False):
 
         """
         Saves the trained model to four files: a JSON file with the settings, a pickled pyTorch state dict
@@ -94,7 +96,8 @@ class Estimator(object):
         # Save state dict
         logger.debug("Saving state dictionary to %s_state_dict.pt", filename)
         torch.save(self.model.state_dict(), filename + "_state_dict.pt")
-        
+        print(self.model.state_dict().keys())       
+ 
         # Save model
         if save_model:
             logger.debug("Saving model to %s_model.pt", filename)
@@ -162,8 +165,20 @@ class Estimator(object):
             self.x_scaling_means = None
             self.x_scaling_stds = None
 
+        module = self.model.ll1
+        print("before pruning")
+        print(list(module.named_parameters()))
+        print(list(module.named_buffers()))
+ 
+        prune.random_unstructured(module, name="weight", amount=0.3)
+        print("before pruning")
+        print(list(module.named_parameters()))
+        print(list(module.named_buffers()))
+        print(self.model.state_dict().keys())
+ 
         # Load state dict
         logger.debug("Loading state dictionary from %s_state_dict.pt", filename)
+        print(self.model.state_dict().keys())       
         self.model.load_state_dict(torch.load(filename + "_state_dict.pt", map_location="cpu"))
 
     def initialize_input_transform(self, x, transform=True, overwrite=True):
