@@ -21,14 +21,16 @@ def load(f = None, events = None, jets = None, leps = None, n = 0, t = None, do 
         return None
     #tree = uproot.open(f)[t]
     tree = uproot4.open(f)[t]
-    if n > 0: # if n > 0 n is the number of entries to do training on 
-        df    = tree.pandas.df(events, entrystop = n)
-        jetdf = tree.pandas.df(jets, entrystop = n)
-        lepdf = tree.pandas.df(leps, entrystop = n)
-    else: # else do training on the full sample
-        df    = tree.pandas.df(events)
-        jetdf = tree.pandas.df(jets)
-        lepdf = tree.pandas.df(leps)
+    with uproot4.open(f) as tree:
+
+        if n > 0: # if n > 0 n is the number of entries to do training on 
+            df    = tree.pandas.df(events, entrystop = n)
+            jetdf = tree.pandas.df(jets, entrystop = n)
+            lepdf = tree.pandas.df(leps, entrystop = n)
+        else: # else do training on the full sample
+            df    = tree.pandas.df(events)
+            jetdf = tree.pandas.df(jets)
+            lepdf = tree.pandas.df(leps)
     if do == "dilepton":
         nJet = 2; nLep = 2
         dfj1 = jetdf.xs(0, level='subentry')
@@ -59,12 +61,15 @@ def load(f = None, events = None, jets = None, leps = None, n = 0, t = None, do 
                           Jet2_Pt = dfj2['Jet_Pt'], Jet2_Mass=dfj2['Jet_Mass'],   
                           Jet3_Pt = dfj3['Jet_Pt'], Jet3_Mass=dfj3['Jet_Mass'],   
                           Jet4_Pt = dfj4['Jet_Pt'], Jet4_Mass=dfj4['Jet_Mass']).fillna(0.0)          
-    labels =  ['Number of jets', '$\mathrm{p_{T}^{miss}}$ [GeV]']
+    labels =  ['Number of jets', 'pTmiss [GeV]']
+    #labels =  ['Number of jets', '$\mathrm{p_{T}^{miss}}$ [GeV]']
     for j in range(1, nJet+1):
-        labels.append('Jet '+str(j)+' $\mathrm{p_{T}}$ [GeV]')
+        labels.append('Jet '+str(j)+' pT [GeV]')
+        #labels.append('Jet '+str(j)+' $\mathrm{p_{T}}$ [GeV]')
         labels.append('Jet '+str(j)+' mass [GeV]')
     for l in range(1, nLep+1):
-        labels.append('Lepton '+str(j)+' $\mathrm{p_{T}}$ [GeV]')
+        labels.append('Lepton '+str(j)+' pT [GeV]')
+        #labels.append('Lepton '+str(j)+' $\mathrm{p_{T}}$ [GeV]')
     print("final ", final)
     return final, labels
 
