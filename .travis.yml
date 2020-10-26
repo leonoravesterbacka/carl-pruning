@@ -8,8 +8,6 @@ before_install:
    - virtualenv --version
 script:
   - python -W error::DeprecationWarning -c 'import distutils'
-install:
   - pip install -r requirements.txt
-script:
   - pytest tests/test.py
   - pytest test_training.py
