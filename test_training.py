@@ -26,7 +26,7 @@ def test_training():
         x1=x1,
         scale_inputs = True,
         prune_network = False,
-    #    early_stopping = True,
-    #    early_stopping_patience = 10
     )
+if __name__ == "__main__":
+    test_training()
     assert True
