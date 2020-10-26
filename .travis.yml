@@ -1,6 +1,7 @@
 language: python
 python:
 - '3.7'
+install: skip
 before_install:
    - virtualenv --version
    - deactivate
