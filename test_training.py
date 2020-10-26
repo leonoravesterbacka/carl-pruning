@@ -5,7 +5,6 @@ import optparse
 import torch
 import tarfile
 from network import RatioEstimator
-from network import Loader
 
 
 parser = optparse.OptionParser(usage="usage: %prog [opts]", version="%prog 1.0")
@@ -17,7 +16,6 @@ sample  = 'dilepton'
 var     = opts.variation
 n       = opts.nentries
 p       = opts.datapath
-loading = Loader()
 #if os.path.exists('tests/data/'+ sample +'/'+ var +'/X_train_'+str(n)+'.npy'):
 x='tests/data/'+ sample +'/'+ var +'/X_train_'+str(n)+'.npy'
 y='tests/data/'+ sample +'/'+ var +'/y_train_'+str(n)+'.npy'
