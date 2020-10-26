@@ -18,26 +18,12 @@ var     = opts.variation
 n       = opts.nentries
 p       = opts.datapath
 loading = Loader()
-if os.path.exists('tests/data/'+ sample +'/'+ var +'/X_train_'+str(n)+'.npy'):
-    x='tests/data/'+ sample +'/'+ var +'/X_train_'+str(n)+'.npy'
-    y='tests/data/'+ sample +'/'+ var +'/y_train_'+str(n)+'.npy'
-    x0='tests/data/'+ sample +'/'+ var +'/X0_train_'+str(n)+'.npy'
-    x1='tests/data/'+ sample +'/'+ var +'/X1_train_'+str(n)+'.npy'
-    print("Loaded existing datasets ")
-else:
-    x, y, x0, x1 = loading.loading(
-        folder = './tests/data/',
-        plot = False,
-        var = var,
-        do = sample,
-        randomize = False,
-        save = True,
-        correlation = True,
-        preprocessing = True,
-        nentries = n,
-        path = p,
-    )
-    print("Loaded new datasets ")
+#if os.path.exists('tests/data/'+ sample +'/'+ var +'/X_train_'+str(n)+'.npy'):
+x='tests/data/'+ sample +'/'+ var +'/X_train_'+str(n)+'.npy'
+y='tests/data/'+ sample +'/'+ var +'/y_train_'+str(n)+'.npy'
+x0='tests/data/'+ sample +'/'+ var +'/X0_train_'+str(n)+'.npy'
+x1='tests/data/'+ sample +'/'+ var +'/X1_train_'+str(n)+'.npy'
+print("Loaded existing datasets ")
 
 estimator = RatioEstimator(
     n_hidden=(10,10),
