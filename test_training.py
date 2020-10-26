@@ -6,10 +6,10 @@ import tarfile
 from network import RatioEstimator
 
 def test_training():
-    x ='data/dilepton/QSFUP/X_train_10.npy'
-    y ='data/dilepton/QSFUP/y_train_10.npy'
-    x0='data/dilepton/QSFUP/X0_train_10.npy'
-    x1='data/dilepton/QSFUP/X1_train_10.npy'
+    x ='tests/data/dilepton/QSFUP/X_train_10.npy'
+    y ='tests/data/dilepton/QSFUP/y_train_10.npy'
+    x0='tests/data/dilepton/QSFUP/X0_train_10.npy'
+    x1='tests/data/dilepton/QSFUP/X1_train_10.npy'
     print("Loaded existing datasets ")
     
     estimator = RatioEstimator(
