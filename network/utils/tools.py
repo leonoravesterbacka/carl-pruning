@@ -5,7 +5,7 @@ import logging
 import os
 import stat
 import numpy as np
-import uproot
+import uproot4
 import pandas as pd
 import torch
 from torch.nn import functional as F
@@ -19,7 +19,8 @@ initialized = False
 def load(f = None, events = None, jets = None, leps = None, n = 0, t = None, do = "dilepton"):
     if f is None:
         return None
-    tree = uproot.open(f)[t]
+    #tree = uproot.open(f)[t]
+    tree = uproot4.open(f)[t]
     if n > 0: # if n > 0 n is the number of entries to do training on 
         df    = tree.pandas.df(events, entrystop = n)
         jetdf = tree.pandas.df(jets, entrystop = n)
